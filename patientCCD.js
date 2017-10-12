@@ -1,37 +1,51 @@
-function intialize()
-{	
-	var studentrestdata = new XMLHttpRequest();
-	 studentrestdata.open("GET", "resources/patient.txt", true);
-	 studentrestdata.send();
-	 studentrestdata.onreadystatechange = function() {
-	    if ( studentrestdata.readyState == 4 &&  studentrestdata.status == 200) {
-	        var dataObj = JSON.parse( studentrestdata.responseText);
-	        
-	        var i;
-	        for(i=0;i<dataObj.length;i++)
-	        	{
-	        	    render(dataObj[i]);
-	        	  
-	        	}
-	    }
-	};	
+
+function intialize(){	
+
+	        getFile("resources/patient.txt");
+	        for(var i=0;i<window.dataObj.length;i++){
+
+	            render(dataObj[i]);  
+	       }
+	   
 	
 }
 
 
-function render(dataObj)
-{
+function getFile(file){
+ 
+   var studentrestdata = new XMLHttpRequest();
+   
+   studentrestdata.onreadystatechange = function() {
+   if ( studentrestdata.readyState == 4 &&  studentrestdata.status == 200) {
+            window.dataObj = JSON.parse( studentrestdata.responseText);
+        }
+    };  
+    studentrestdata.open("GET", file, false);
+   studentrestdata.send();
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+function render(dataObj){
 	
 	
 	var x = document.getElementsByClassName("patient_basicData");
-      for(var i=0;i<x.length;i++)
-     {  
+    for(var i=0;i<x.length;i++){  
         var attr=x[i].getAttribute("name");
         x[i].innerHTML = dataObj[attr];   
      }
-  
-
-var patientAllergy = new XMLHttpRequest();
+    var patientAllergy = new XMLHttpRequest();
 	 patientAllergy.open("GET", "resources/patientAllergy.txt", true);
 	 patientAllergy.send();
 	 patientAllergy.onreadystatechange = function() {
@@ -39,8 +53,7 @@ var patientAllergy = new XMLHttpRequest();
 	        var dataObj = JSON.parse( patientAllergy.responseText);
 	        
 	        var i;
-	        for(i=0;i<dataObj.length;i++)
-	        	{
+	        for(i=0;i<dataObj.length;i++){
 	        	     table= document.getElementById("allergy");
     var row = table.insertRow(1);
     var allergen = row.insertCell(0);
